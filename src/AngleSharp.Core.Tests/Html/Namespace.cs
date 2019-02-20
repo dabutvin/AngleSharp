@@ -129,6 +129,20 @@ namespace AngleSharp.Core.Tests.Html
         }
 
         [Test]
+        public void MultipleNamespacesWithXmlnsPrefixes()
+        {
+             var doc = (@"<!DOCTYPE html>
+                <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink>
+                </svg>").ToHtmlDocument();
+
+            var body = doc.Body;
+            var svg = body.FirstElementChild;
+            Assert.AreEqual("BODY", body.TagName);
+            Assert.AreEqual("svg", svg.TagName);
+            Assert.AreEqual("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"></svg>", svg.ToHtml());
+        }
+
+        [Test]
         public void DuplicatedHtmlTagWithMultipleXmlLangAttributes()
         {
             var doc = (@"<!DOCTYPE html><html xml:lang=bar><html xml:lang=foo>").ToHtmlDocument();
